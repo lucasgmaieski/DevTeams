@@ -1,16 +1,36 @@
-import { Text } from 'react-native';
+import { FlatList, Text } from 'react-native';
 import { Container } from './styles';
 import { Header } from '@components/Header';
 import { Highlight } from '@components/Highlight';
 import { GroupCard } from '@components/GroupCard';
+import { useState } from 'react';
+import { ListEmpty } from '@components/ListEmpty';
+import { Button } from '@components/Button';
 
 export default function Groups() {
-  return (
-    <Container>
-      <Header />
-      <Highlight title='Turmas' subtitle='Jogue com a sua turma'/>
+    const [groups, setGroups] = useState(["Galera da Rocket"])
+    return (
+        <Container>
+        <Header />
+        <Highlight title='Turmas' subtitle='Jogue com a sua turma'/>
 
-      <GroupCard title='Galera do Ignite' />
-    </Container>
-  );
+        <FlatList 
+            data={groups}
+            keyExtractor={item => item}
+            renderItem={({ item }) => (
+                <GroupCard 
+                    title={item}  
+                />
+            )}
+            contentContainerStyle={groups.length === 0 && { flex: 1}}
+            ListEmptyComponent={() => (
+                <ListEmpty message="Que tal cadastrar a primeira turma?"/>
+            )}
+        />
+
+        <Button 
+            title="Criar nova turma"
+        />
+        </Container>
+    );
 }
